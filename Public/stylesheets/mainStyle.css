@@ -1,0 +1,43 @@
+.player {
+	width: 640px;
+	height: 465px;
+	float: left;
+	border: 2px solid black;
+	border-radius: 10px;
+	margin:5px;
+	overflow: hidden;
+	background-image: (public/images/bf4/backgrounds/3652.Background.jpg);
+}
+
+.flash {
+	margin: 10px;
+}
+
+.rank {
+	width: 60px;
+	height: 60px;
+}
+.playerName {
+	margin-top:15px;
+	font-size: 24pt;
+	color: white;
+	float: left;
+}
+.playerRank{
+	width: 55px;
+	height: 55px;
+	margin-top: 10px;
+	margin-bottom: 15px;
+	float: left;
+}
+.playerDemo{
+	margin: 10px;
+	float: right;
+}
+table{
+	border: 1;
+	border-color:white;
+	color: black;
+	font-weight: bold;
+	font-size: 14px;
+}

@@ -1,0 +1,181 @@
+html
+	head
+		link(rel='stylesheet', href='public/stylesheets/mainStyle.css')
+	body
+		#sweet-jeezus.player(style='background-image: url(public/images/bf4/backgrounds/3652.Background.jpg);')
+			.playerRank
+				img.rank(src='public/images/#{sj.rankImage}')
+			.playerName
+				| #{sj.name}
+			.playerDemo
+				table(border=1)
+					tr
+						td
+							| Kills
+						td
+							| Deaths
+						td
+							| K/Dr
+						td
+							| H-Shots
+						td
+							| Score
+						td
+							| Skill
+						td
+							| Play Time
+					tr
+						td
+							|#{sj.kills}
+						td(style="color:red")
+							|#{sj.deaths}
+						td(style="color:green")
+							|#{sj.kdr}
+						td
+							|#{sj.headShots}
+						td
+							|#{sj.score}
+						td
+							|#{sj.skill}
+						td
+							|#{sj.timePlayed}
+
+			.flash
+				object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=sweet_jeezus', bgcolor='#000000')
+					param(name='allowFullScreen', value='true')
+					param(name='allowScriptAccess', value='always')
+					param(name='allowNetworking', value='all')
+					param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
+					param(name='flashvars', value='hostname=www.twitch.tv&channel=sweet_jeezus&auto_play=true&start_volume=25')
+		#ndn.player(style='background-image: url(public/images/bf4/backgrounds/3652.Background.jpg);')
+			.playerRank
+				img.rank(src='public/images/#{ndn.rankImage}')
+			.playerName
+				| #{ndn.name}
+			.playerDemo
+				table(border=1)
+					tr
+						td
+							| Kills
+						td
+							| Deaths
+						td
+							| K/Dr
+						td
+							| H-Shots
+						td
+							| Score
+						td
+							| Skill
+						td
+							| Play Time
+					tr
+						td
+							|#{ndn.kills}
+						td(style="color:red")
+							|#{ndn.deaths}
+						td(style="color:green")
+							|#{ndn.kdr}
+						td
+							|#{ndn.headShots}
+						td
+							|#{ndn.score}
+						td
+							|#{ndn.skill}
+						td
+							|#{ndn.timePlayed}
+			.flash
+				object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=bsidedemo', bgcolor='#000000')
+					param(name='allowFullScreen', value='true')
+					param(name='allowScriptAccess', value='always')
+					param(name='allowNetworking', value='all')
+					param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
+					param(name='flashvars', value='hostname=www.twitch.tv&channel=bsidedemo&auto_play=true&start_volume=25')
+		#bsidedemo.player(style='background-image: url(public/images/bf4/backgrounds/3652.Background.jpg);')
+			.playerRank
+				img.rank(src='public/images/#{bs.rankImage}')
+			.playerName
+				| #{bs.name}
+			.playerDemo
+				table(border=1)
+					tr
+						td
+							| Kills
+						td
+							| Deaths
+						td
+							| K/Dr
+						td
+							| H-Shots
+						td
+							| Score
+						td
+							| Skill
+						td
+							| Play Time
+					tr
+						td
+							|#{bs.kills}
+						td(style="color:red")
+							|#{bs.deaths}
+						td(style="color:green")
+							|#{bs.kdr}
+						td
+							|#{bs.headShots}
+						td
+							|#{bs.score}
+						td
+							|#{bs.skill}
+						td
+							|#{bs.timePlayed}
+			.flash
+				object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=ahostilendn', bgcolor='#000000')
+					param(name='allowFullScreen', value='true')
+					param(name='allowScriptAccess', value='always')
+					param(name='allowNetworking', value='all')
+					param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
+					param(name='flashvars', value='hostname=www.twitch.tv&channel=ahostilendn&auto_play=true&start_volume=25')
+		#cpbronco.player(style='background-image: url(public/images/bf4/backgrounds/3652.Background.jpg);')
+			.playerRank
+				img.rank(src='public/images/#{cp.rankImage}')
+			.playerName
+				| #{cp.name}
+			.playerDemo
+				table(border=1)
+					tr
+						td
+							| Kills
+						td
+							| Deaths
+						td
+							| K/Dr
+						td
+							| H-Shots
+						td
+							| Score
+						td
+							| Skill
+						td
+							| Play Time
+					tr
+						td
+							|#{cp.kills}
+						td(style="color:red")
+							|#{cp.deaths}
+						td(style="color:green")
+							|#{cp.kdr}
+						td
+							|#{cp.headShots}
+						td
+							|#{cp.score}
+						td
+							|#{cp.skill}
+						td
+							|#{cp.timePlayed}
+			.flash
+				object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=cpbronco', bgcolor='#000000')
+					param(name='allowFullScreen', value='true')
+					param(name='allowScriptAccess', value='always')
+					param(name='allowNetworking', value='all')
+					param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
+					param(name='flashvars', value='hostname=www.twitch.tv&channel=cpbronco&auto_play=true&start_volume=25')
