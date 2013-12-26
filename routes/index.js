@@ -41,10 +41,9 @@ function loadUserDataRecurse(users, count, callback){
 	} else {
 		MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
 			if(err) throw err;
-			var data = db.collection('bf4');
 			var resultArray = [];
 			query = {"player.name":users[count].name};
-			db.collection('bf4').find(query).sort(sorter).limit(1).toArray(function(err, doc){
+			db.collection('bf4_back').find(query).sort(sorter).limit(1).toArray(function(err, doc){
 				console.log(doc[0].player.dateUpdate + " "+ doc[0].player.name);
 				if(err) throw err;
 				users[count].score = doc[0].player.score;

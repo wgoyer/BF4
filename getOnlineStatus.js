@@ -20,7 +20,7 @@ var getUserData = function(){
 	request(options, function(error, response){
 		if(error) console.log(error);
 		console.log(JSON.parse(response.body));
-	}).auth("sweetjeesus","xxx");
+	});
 };
 
 getUserData();
