@@ -1,8 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var query = {};
 var projection = {"player":1, "stats" : 1};
-var sorter = {"player.dateUpdate": -1};
-var cursor;
+var sorter = {"player.dateUpdated": -1};
 
 function player(name){
 	this.name = name;
@@ -42,18 +41,19 @@ function loadUserDataRecurse(users, count, callback){
 		MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
 			if(err) throw err;
 			var resultArray = [];
-			query = {"player.name":users[count].name};
-			db.collection('bf4_back').find(query).sort(sorter).limit(1).toArray(function(err, doc){
-				console.log(doc[0].player.dateUpdate + " "+ doc[0].player.name);
+			query = {"userName":users[count].name};
+			db.collection('bf4').find(query).sort(sorter).limit(1).toArray(function(err, doc){
+				var stats = doc[0].data.generalStats;
+				console.log(doc[0].dateUpdated + " "+ doc[0].userName);
 				if(err) throw err;
-				users[count].score = doc[0].player.score;
-				users[count].timePlayed = doc[0].player.timePlayed;
-				users[count].skill = doc[0].stats.skill;
-				users[count].kills = doc[0].stats.kills;
-				users[count].deaths = doc[0].stats.deaths;
-				users[count].kdr = doc[0].stats.extra.kdr.toFixed(2);
-				users[count].headShots = doc[0].stats.headshots;
-				users[count].rankImage = doc[0].player.rank.imgLarge;
+				users[count].score = stats.score;
+				users[count].timePlayed = stats.timePlayed;
+				users[count].skill = stats.skill;
+				users[count].kills = stats.kills;
+				users[count].deaths = stats.deaths;
+				users[count].kdr = stats.kdRatio.toFixed(2);
+				users[count].headShots = stats.headshots;
+				users[count].rankImage = "bf4\\ranks\\r"+stats.rank+".png";
 				return loadUserDataRecurse(users, count+1, callback);
 			});
 		});
