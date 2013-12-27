@@ -6,7 +6,7 @@
 	border-radius: 10px;
 	margin:5px;
 	overflow: hidden;
-	background-image: (public/images/bf4/backgrounds/3652.Background.jpg);
+	background-image: url('/public/images/bf4/backgrounds/3652.Background.jpg');
 }
 
 .flash {
@@ -35,8 +35,7 @@
 	float: right;
 }
 table{
-	border: 1;
-	border-color:white;
+	border-color:gray;
 	color: black;
 	font-weight: bold;
 	font-size: 14px;

@@ -2,11 +2,12 @@ var MongoClient = require('mongodb').MongoClient;
 var query = {};
 var projection = {"player":1, "stats" : 1};
 var sorter = {"dateUpdated": -1};
+var playerArray = [];
 
 function player(name){
 	this.name = name;
 	this.score = 0;
-	//this.timePlayed = 0;
+	this.timePlayed = 0;
 	this.skill = 0;
 	this.kills = 0;
 	this.deaths = 0;
@@ -15,11 +16,14 @@ function player(name){
 	this.roundsWon = 0;
 	this.roundsLost = 0;
 	this.rankImage = "bf4/ranks/r0.png";
+	this.twitterID = "";
 }
 
 exports.index = function(req,res){
 	createUsers(function(sj, bs, ndn, cp){
-		res.render('index', {sj: sj, ndn: ndn, bs: bs, cp: cp});
+		playerArray = [sj, bs, ndn, cp];
+		//console.log(playerArray);
+		res.render('index', {sj: sj, ndn: ndn, bs: bs, cp: cp, playerArray: playerArray});
 	});
 };
 
@@ -54,6 +58,7 @@ function loadUserDataRecurse(users, count, callback){
 				users[count].kdr = stats.kdRatio.toFixed(2);
 				users[count].headShots = stats.headshots;
 				users[count].rankImage = "bf4\\ranks\\r"+stats.rank+".png";
+				users[count].twitchID = doc[0].twitchID;
 				return loadUserDataRecurse(users, count+1, callback);
 			});
 		});
