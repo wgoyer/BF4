@@ -6,7 +6,7 @@ var sorter = {"dateUpdated": -1};
 function player(name){
 	this.name = name;
 	this.score = 0;
-	this.timePlayed = 0;
+	//this.timePlayed = 0;
 	this.skill = 0;
 	this.kills = 0;
 	this.deaths = 0;
@@ -44,10 +44,10 @@ function loadUserDataRecurse(users, count, callback){
 			query = {"userName":users[count].name};
 			db.collection('bf4').find(query).sort(sorter).limit(1).toArray(function(err, doc){
 				var stats = doc[0].data.generalStats;
-				console.log(doc[0].dateUpdated + " "+ doc[0].userName);
+				var timePlayed = (stats.timePlayed / 60 / 60).toFixed(2);
 				if(err) throw err;
+				users[count].timePlayed = timePlayed;
 				users[count].score = stats.score;
-				users[count].timePlayed = stats.timePlayed;
 				users[count].skill = stats.skill;
 				users[count].kills = stats.kills;
 				users[count].deaths = stats.deaths;
