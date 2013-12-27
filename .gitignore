@@ -1,3 +1,4 @@
 ignore/
 public/Images
 node_modules
+Debug/

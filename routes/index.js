@@ -1,7 +1,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var query = {};
 var projection = {"player":1, "stats" : 1};
-var sorter = {"player.dateUpdated": -1};
+var sorter = {"dateUpdated": -1};
 
 function player(name){
 	this.name = name;
