@@ -11,35 +11,28 @@
 
 var MongoClient = require('mongodb').MongoClient;
 var request = require('request');
-
 var SweetJeezus = {
 	name: "Sweet-Jeezus",
 	ID: "935235828",
 	twitchID: "sweet_jeezus"
 };
-
 var bsidedemo = {
 	name: "bsidedemo",
 	ID: "939582412",
 	twitchID: "bsidedemo"
 };
-
 var cpbronco = {
 	name: "cpbronco",
 	ID: "271431564",
 	twitchID: "cpbronco"
 };
-
 var A_Hostile_NdN = {
 	name: "A_Hostile_NdN",
 	ID: "890563396",
 	twitchID: "ahostilendn"
 };
-
-// var users = ['Sweet-Jeezus','bsidedemo','cpbronco','A_Hostile_NdN'];
 var users = [SweetJeezus, bsidedemo, cpbronco, A_Hostile_NdN];
-// var userID = ['935235828','939582412','271431564','890563396']; // sweet-jeezus,bsidedemo,cpbronco,a_hostile_ndn
-// var twitchID = ['sweet_jeezus','bsidedemo','cpbronco','ahostilendn'];
+
 var logStatsForUser = function(user){
 	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
 	MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
