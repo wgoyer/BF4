@@ -16,7 +16,7 @@ function player(name){
 	this.roundsWon = 0;
 	this.roundsLost = 0;
 	this.rankImage = "bf4/ranks/r0.png";
-	this.twitterID = "";
+	this.twitchID = "";
 }
 
 exports.index = function(req,res){

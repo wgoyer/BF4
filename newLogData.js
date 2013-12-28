@@ -11,19 +11,45 @@
 
 var MongoClient = require('mongodb').MongoClient;
 var request = require('request');
-var users = ['Sweet-Jeezus','bsidedemo','cpbronco','A_Hostile_NdN'];
-var userID = ['935235828','939582412','271431564','890563396']; // sweet-jeezus,bsidedemo,cpbronco,a_hostile_ndn
-var twitchID = ['sweet_jeezus','bsidedemo','cpbronco','ahostilendn'];
-var logStatsForUser = function(userID, userName, twitchID){
-	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+userID+"/32/";
+
+var SweetJeezus = {
+	name: "Sweet-Jeezus",
+	ID: "935235828",
+	twitchID: "sweet_jeezus"
+};
+
+var bsidedemo = {
+	name: "bsidedemo",
+	ID: "939582412",
+	twitchID: "bsidedemo"
+};
+
+var cpbronco = {
+	name: "cpbronco",
+	ID: "271431564",
+	twitchID: "cpbronco"
+};
+
+var A_Hostile_NdN = {
+	name: "A_Hostile_NdN",
+	ID: "890563396",
+	twitchID: "ahostilendn"
+};
+
+// var users = ['Sweet-Jeezus','bsidedemo','cpbronco','A_Hostile_NdN'];
+var users = [SweetJeezus, bsidedemo, cpbronco, A_Hostile_NdN];
+// var userID = ['935235828','939582412','271431564','890563396']; // sweet-jeezus,bsidedemo,cpbronco,a_hostile_ndn
+// var twitchID = ['sweet_jeezus','bsidedemo','cpbronco','ahostilendn'];
+var logStatsForUser = function(user){
+	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
 	MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
 		if(err) throw err;
 		request(userURI, function(error, response, body){
 			if(!error && response.statusCode == 200){
 				var stats = JSON.parse(body);
 				stats['dateUpdated'] = new Date();
-				stats['userName'] = userName;
-				stats['twitchID'] = twitchID;
+				stats['userName'] = user.name;
+				stats['twitchID'] = user.twitchID;
 				console.log(stats.dateUpdated);
 				db.collection('bf4').insert(stats, function(err,data){
 					if(err) throw err;
@@ -34,6 +60,6 @@ var logStatsForUser = function(userID, userName, twitchID){
 	});
 };
 
-for(i=0;i<userID.length;i++){
-	logStatsForUser(userID[i], users[i], twitchID[i]);
+for(i=0;i<users.length;i++){
+	logStatsForUser(users[i]);
 }
