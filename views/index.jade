@@ -1,7 +1,12 @@
 html
 	head
 		link(rel='stylesheet', href='public/stylesheets/mainStyle.css')
+		script(type='text/javascript' src='public/js/updateStats.js')
 	body
+		button(name="update")
+			| Update all Stats
+		br
+		br
 		- for (i=0;i<playerArray.length;i++) {
 			div(id=playerArray[i].name, class='player')
 				.playerRank
