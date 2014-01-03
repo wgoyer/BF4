@@ -1,9 +1,10 @@
 html
 	head
 		link(rel='stylesheet', href='public/stylesheets/mainStyle.css')
+		script(type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		script(type='text/javascript' src='public/js/updateStats.js')
 	body
-		button(name="update")
+		button(name="update" onClick="updateStats()")
 			| Update all Stats
 		br
 		br

@@ -1,6 +1,7 @@
 var express = require('express')
 , path = require('path')
 , index = require('./routes/index.js')
+, logStats = require('./routes/logData.js')
 , routes = require('./routes')
 
 var app = express();
@@ -19,7 +20,7 @@ app.get('/public/*', function(req,res){
   res.sendfile(__dirname + req.url);
 });
 
-// app.post('/createDefects', defects.createDefect);
+app.post('/updateStats', logStats.logData);
 
 app.get("*", function(req,res) {
 	res.send("Page not found.", 404);

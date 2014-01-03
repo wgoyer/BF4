@@ -20,10 +20,9 @@ function player(name){
 }
 
 exports.index = function(req,res){
-	createUsers(function(sj, bs, ndn, cp){
-		playerArray = [sj, bs, ndn, cp];
-		//console.log(playerArray);
-		res.render('index', {sj: sj, ndn: ndn, bs: bs, cp: cp, playerArray: playerArray});
+	createUsers(function(sj, bs, ndn, cp, sd){
+		playerArray = [sj, bs, ndn, cp, sd];
+		res.render('index', {playerArray: playerArray});
 	});
 };
 
@@ -32,9 +31,10 @@ function createUsers(callback){
 	var ndn = new player("A_Hostile_NdN");
 	var bside = new player("bsidedemo");
 	var bronco = new player("cpbronco");
-	var users = [sweetJesus, ndn, bside, bronco];
+	var skidawg = new player("E5skiDAWG");
+	var users = [sweetJesus, ndn, bside, bronco, skidawg];
 	loadUserDataRecurse(users, 0, function(){
-		callback(sweetJesus, ndn, bside, bronco);
+		callback(sweetJesus, ndn, bside, bronco, skidawg);
 	});
 }
 
