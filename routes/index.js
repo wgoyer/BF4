@@ -39,6 +39,7 @@ function createUsers(callback){
 }
 
 function loadUserDataRecurse(users, count, callback){
+	var timePlayed;
 	if(users.length === count){
 		callback();
 	} else {
@@ -48,7 +49,12 @@ function loadUserDataRecurse(users, count, callback){
 			query = {"userName":users[count].name};
 			db.collection('bf4').find(query).sort(sorter).limit(1).toArray(function(err, doc){
 				var stats = doc[0].data.generalStats;
-				var timePlayed = (stats.timePlayed / 60 / 60).toFixed(2);
+				if (stats.timePlayed > 1){
+					timePlayed = (stats.timePlayed / 60 / 60).toFixed(2);
+				}
+				else {
+					timePlayed = "N/A";
+				}
 				if(err) throw err;
 				users[count].timePlayed = timePlayed;
 				users[count].score = stats.score;

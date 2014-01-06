@@ -16,13 +16,30 @@ app.configure(function(){
 
 app.get('/', index.index);
 
-app.get('/public/*', function(req,res){
+app.get('/public/*', function(req, res){
   res.sendfile(__dirname + req.url);
 });
 
-app.post('/updateStats', logStats.logData);
+// app.post('/updateStats', function(req, res){
+// 	logStats.logData(function(){
+// 		res.send('done');
+// 	});
+// });
 
-app.get("*", function(req,res) {
+app.post('/updateStats', function(req, res){
+	var sweetjesus={
+		name: "Sweet-Jeezus",
+		ID: "935235828",
+		twitchID: "sweet_jeezus"
+	};
+	
+	logStats.logSingleUser(sweetjesus, function(){
+		console.log(sweetjesus);
+		res.send(sweetjesus);
+	});
+});
+
+app.get("*", function(req, res) {
 	res.send("Page not found.", 404);
 });
 

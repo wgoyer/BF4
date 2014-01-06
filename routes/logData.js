@@ -28,7 +28,7 @@ var E5skiDAWG = {
 };
 var users = [SweetJeezus, bsidedemo, cpbronco, A_Hostile_NdN, E5skiDAWG];
 
-logStatsForUser = function(user){
+logStatsForUser = function(user, callback){
 	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
 	MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
 		if(err) throw err;
@@ -42,17 +42,57 @@ logStatsForUser = function(user){
 				db.collection('bf4').insert(stats, function(err,data){
 					if(err) throw err;
 					db.close();
+					if (callback) callback();
 				});
 			}
 		});
 	});
 };
 
-exports.logData = function(){
+getStatsForUser = function(user, callback){
+	var query = {"userName" : user.name};
+	var projection = {"player":1, "stats" : 1};
+	var sorter = {"dateUpdated": -1};
+	MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
+		if(err) throw err;
+		db.collection('bf4').find(query).sort(sorter).limit(1).toArray(function(err, doc){
+			var stats = doc[0].data.generalStats;
+			if (stats.timePlayed > 1){
+				timePlayed = (stats.timePlayed / 60 / 60).toFixed(2);
+			}
+			else {
+				timePlayed = "N/A";
+			}
+			if(err) throw err;
+			user.timePlayed = timePlayed;
+			user.score = stats.score;
+			user.skill = stats.skill;
+			user.kills = stats.kills;
+			user.deaths = stats.deaths;
+			user.kdr = stats.kdRatio.toFixed(2);
+			user.headShots = stats.headshots;
+			user.rankImage = "bf4\\ranks\\r"+stats.rank+".png";
+			user.twitchID = doc[0].twitchID;
+			callback();
+		});
+	});
+};
+
+exports.logData = function(callback){
 	for(i=0;i<users.length;i++){
 		logStatsForUser(users[i]);
 	}
+	callback();
 };
+
+exports.logSingleUser = function(singleUser, callback){
+	logStatsForUser(singleUser, function(){
+		getStatsForUser(singleUser, function(){
+			callback();
+		});
+	});
+};
+
 
 
 /* other links to try
