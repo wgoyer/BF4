@@ -1,37 +1,29 @@
 var MongoClient = require('mongodb').MongoClient;
 var request = require('request');
-//Users - Move to DB at some point, create a form online users can use to create their own card.
-var SweetJeezus = {
-	name: "Sweet-Jeezus",
-	ID: "935235828",
-	twitchID: "sweet_jeezus"
+
+dbConnect = function(callback){
+	MongoClient.connect('mongodb://localhost:27017/BF4', function(err, db){
+		if(err) throw err;
+		callback(db);
+	});
 };
-var bsidedemo = {
-	name: "bsidedemo",
-	ID: "939582412",
-	twitchID: "bsidedemo"
+
+getUsers = function(callback){
+	userArray = [];
+	dbConnect(function(db){
+		db.collection('players').find().toArray(function(err, doc){
+			for(i=0;i<doc.length;i++){
+				userArray.push(doc[i]);
+			}
+			db.close();
+			callback(userArray);
+		});
+	});
 };
-var cpbronco = {
-	name: "cpbronco",
-	ID: "271431564",
-	twitchID: "cpbronco"
-};
-var A_Hostile_NdN = {
-	name: "A_Hostile_NdN",
-	ID: "890563396",
-	twitchID: "ahostilendn"
-};
-var E5skiDAWG = {
-	name: "E5skiDAWG",
-	ID: "945896447",
-	twitchID: "e5skidawg"
-};
-var users = [SweetJeezus, bsidedemo, cpbronco, A_Hostile_NdN, E5skiDAWG];
 
 logStatsForUser = function(user, callback){
 	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
-	MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
-		if(err) throw err;
+	dbConnect(function(db){
 		request(userURI, function(error, response, body){
 			if(!error && response.statusCode == 200){
 				var stats = JSON.parse(body);
@@ -39,7 +31,7 @@ logStatsForUser = function(user, callback){
 				stats['userName'] = user.name;
 				stats['twitchID'] = user.twitchID;
 				console.log(stats.dateUpdated);
-				db.collection('bf4').insert(stats, function(err,data){
+				db.collection('stats').insert(stats, function(err,data){
 					if(err) throw err;
 					db.close();
 					if (callback) callback();
@@ -53,9 +45,8 @@ getStatsForUser = function(user, callback){
 	var query = {"userName" : user.name};
 	var projection = {"player":1, "stats" : 1};
 	var sorter = {"dateUpdated": -1};
-	MongoClient.connect('mongodb://localhost:27017/test', function(err, db){
-		if(err) throw err;
-		db.collection('bf4').find(query).sort(sorter).limit(1).toArray(function(err, doc){
+	dbConnect(function(db){
+		db.collection('stats').find(query).sort(sorter).limit(1).toArray(function(err, doc){
 			var stats = doc[0].data.generalStats;
 			if (stats.timePlayed > 1){
 				timePlayed = (stats.timePlayed / 60 / 60).toFixed(2);
@@ -73,19 +64,20 @@ getStatsForUser = function(user, callback){
 			user.headShots = stats.headshots;
 			user.rankImage = "bf4\\ranks\\r"+stats.rank+".png";
 			user.twitchID = doc[0].twitchID;
+			db.close();
 			callback();
 		});
 	});
 };
 
-exports.logData = function(callback){
+logData = function(callback){
 	for(i=0;i<users.length;i++){
 		logStatsForUser(users[i]);
 	}
 	callback();
 };
 
-exports.logSingleUser = function(singleUser, callback){
+logSingleUser = function(singleUser, callback){
 	logStatsForUser(singleUser, function(){
 		getStatsForUser(singleUser, function(){
 			callback();
@@ -93,6 +85,10 @@ exports.logSingleUser = function(singleUser, callback){
 	});
 };
 
+module.exports.logSingleUser = logSingleUser;
+module.exports.logData = logData;
+module.exports.getStatsForUser = getStatsForUser;
+module.exports.getUsers = getUsers;
 
 
 /* other links to try
