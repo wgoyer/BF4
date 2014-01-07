@@ -70,13 +70,6 @@ getStatsForUser = function(user, callback){
 	});
 };
 
-logData = function(callback){
-	for(i=0;i<users.length;i++){
-		logStatsForUser(users[i]);
-	}
-	callback();
-};
-
 logSingleUser = function(singleUser, callback){
 	logStatsForUser(singleUser, function(){
 		getStatsForUser(singleUser, function(){
@@ -86,7 +79,6 @@ logSingleUser = function(singleUser, callback){
 };
 
 module.exports.logSingleUser = logSingleUser;
-module.exports.logData = logData;
 module.exports.getStatsForUser = getStatsForUser;
 module.exports.getUsers = getUsers;
 
