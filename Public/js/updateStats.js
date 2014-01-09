@@ -2,8 +2,18 @@ var updateStats = function(){
 	$.ajax({
 		type: 'POST',
 		url:'/updateStats',
-	}).done(function(){
-		console.log('possibly loading the player divs?');
-		$('#Sweet-Jeezus .playerDemo').html('<img height="55px", width="45px", src = "/public/images/gifs/loading.gif" />');
+		beforeSend: function(){
+			$('#Sweet-Jeezus .playerDemo').html('<img height="55px", width="45px", src = "/public/images/gifs/loading.gif" />');
+		}
+	}).success(function(data){
+		generateTable(data, function(newHtml){
+			$('#Sweet-Jeezus .playerDemo').html(newHtml);
+		});
 	});
+};
+
+var generateTable = function(data, callback){
+	var timePlayed = data.timePlayed;
+	var newHtml = "<table border='1'><tr><td>Kills</td><td>Deaths</td><td>K/Dr</td><td>H-Shots</td><td>Score</td><td>Skill</td><td>Hrs Played</td></tr><tr><td>"+data.kills+"</td><td style='color:red'>"+data.deaths+"</td><td style='color:green'>"+data.kdr+"</td><td>"+data.headShots+"</td><td>"+data.score+"</td><td>"+data.skill+"</td><td>"+timePlayed+"</td></tr></table>";
+	callback(newHtml);
 };
