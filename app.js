@@ -26,16 +26,20 @@ app.get('/public/*', function(req, res){
 // 	});
 // });
 
-app.post('/updateStats', function(req, res){
-	var sweetjesus={
-		name: "Sweet-Jeezus",
-		ID: "935235828",
-		twitchID: "sweet_jeezus"
-	};
-	
-	logStats.logSingleUser(sweetjesus, function(){
-		console.log(sweetjesus);
-		res.send(sweetjesus);
+app.post('/updateStats/:userName', function(req, res){
+	// var sweetjesus={
+	// 	name: "Sweet-Jeezus",
+	// 	ID: "935235828",
+	// 	twitchID: "sweet_jeezus"
+	// };
+	var userName = req.params.userName;
+	logStats.getSingleUser(userName, function(user){
+		logStats.logStatsForUser(user, function(){
+			logStats.getStatsForUser(user, function(){
+				console.log(user);
+				res.send(user);
+			});
+		});
 	});
 });
 

@@ -7,7 +7,7 @@ exports.index = function(req,res){
 };
 
 function createUsers(callback){
-	statGrabber.getUsers(function(users){
+	statGrabber.getAllUsers(function(users){
 		loadUserDataRecurse(users, 0, function(){
 			callback(users);
 		});

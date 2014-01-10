@@ -1,13 +1,16 @@
-var updateStats = function(){
+var updateStats = function(user){
+	console.log(user);
+	var userDiv = '#'+user+' .playerDemo';
+	// console.log(userDiv);
 	$.ajax({
 		type: 'POST',
-		url:'/updateStats',
+		url:'/updateStats/'+user,
 		beforeSend: function(){
-			$('#Sweet-Jeezus .playerDemo').html('<img height="55px", width="45px", src = "/public/images/gifs/loading.gif" />');
+			$(userDiv).html('<img height="55px", width="45px", src = "/public/images/gifs/loading.gif" />');
 		}
 	}).success(function(data){
 		generateTable(data, function(newHtml){
-			$('#Sweet-Jeezus .playerDemo').html(newHtml);
+			$(userDiv).html(newHtml);
 		});
 	});
 };

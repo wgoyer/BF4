@@ -8,7 +8,7 @@ dbConnect = function(callback){
 	});
 };
 
-getUsers = function(callback){
+getAllUsers = function(callback){
 	userArray = [];
 	dbConnect(function(db){
 		db.collection('players').find().toArray(function(err, doc){
@@ -17,6 +17,15 @@ getUsers = function(callback){
 			}
 			db.close();
 			callback(userArray);
+		});
+	});
+};
+
+getSingleUser = function(userName, callback){
+	var query = {"name" : userName};
+	dbConnect(function(db){
+		db.collection('players').find(query).toArray(function(err, doc){
+			callback(doc[0]);
 		});
 	});
 };
@@ -73,15 +82,16 @@ getStatsForUser = function(user, callback){
 logSingleUser = function(singleUser, callback){
 	logStatsForUser(singleUser, function(){
 		getStatsForUser(singleUser, function(){
-			callback();
+			callback(singleUser);
 		});
 	});
 };
 
 module.exports.logSingleUser = logSingleUser;
 module.exports.getStatsForUser = getStatsForUser;
-module.exports.getUsers = getUsers;
-
+module.exports.getAllUsers = getAllUsers;
+module.exports.getSingleUser = getSingleUser;
+module.exports.logStatsForUser = logStatsForUser;
 
 /* other links to try
 /  warsawoverviewpopulate
