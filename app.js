@@ -27,11 +27,6 @@ app.get('/public/*', function(req, res){
 // });
 
 app.post('/updateStats/:userName', function(req, res){
-	// var sweetjesus={
-	// 	name: "Sweet-Jeezus",
-	// 	ID: "935235828",
-	// 	twitchID: "sweet_jeezus"
-	// };
 	var userName = req.params.userName;
 	logStats.getSingleUser(userName, function(user){
 		logStats.logStatsForUser(user, function(){
