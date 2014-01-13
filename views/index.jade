@@ -49,6 +49,6 @@ html
 						param(name='allowNetworking', value='all')
 						param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
 						param(name='flashvars', value='hostname=www.twitch.tv&channel=#{playerArray[i].twitchID}&auto_play=true&start_volume=25')
-				button(name='update' onClick='updateStats("#{playerArray[i].name}")')
+				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
 					| Update Stats
 		- }

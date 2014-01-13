@@ -1,6 +1,11 @@
 button{
 	float: left;
 }
+.updateBtn{
+	height: 20px;
+	width: 80px;
+	margin-left: 10px;
+}
 .player {
 	width: 640px;
 	height: 485px;
@@ -14,6 +19,7 @@ button{
 
 .flash {
 	margin: 10px;
+	margin-bottom: 5px;
 }
 
 .rank {
