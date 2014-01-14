@@ -8,6 +8,15 @@ dbConnect = function(callback){
 	});
 };
 
+dailyStatsForAllUsers = function(){
+	getAllUsers(function(userArray){
+		for(i=0;i<userArray.length;i++){
+			console.log('Collecting stats for '+userArray[i].name+'.');
+			logStatsForUser(userArray[i], 'daily');
+		}
+	});
+};
+
 getAllUsers = function(callback){
 	userArray = [];
 	dbConnect(function(db){
@@ -30,7 +39,7 @@ getSingleUser = function(userName, callback){
 	});
 };
 
-logStatsForUser = function(user, callback){
+logStatsForUser = function(user, collection, callback){
 	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
 	dbConnect(function(db){
 		request(userURI, function(error, response, body){
@@ -40,7 +49,7 @@ logStatsForUser = function(user, callback){
 				stats['userName'] = user.name;
 				stats['twitchID'] = user.twitchID;
 				console.log(stats.dateUpdated);
-				db.collection('stats').insert(stats, function(err,data){
+				db.collection(collection).insert(stats, function(err,data){
 					if(err) throw err;
 					db.close();
 					if (callback) callback();
@@ -80,7 +89,7 @@ getStatsForUser = function(user, callback){
 };
 
 logSingleUser = function(singleUser, callback){
-	logStatsForUser(singleUser, function(){
+	logStatsForUser(singleUser, 'stats', function(){
 		getStatsForUser(singleUser, function(){
 			callback(singleUser);
 		});
@@ -92,6 +101,7 @@ module.exports.getStatsForUser = getStatsForUser;
 module.exports.getAllUsers = getAllUsers;
 module.exports.getSingleUser = getSingleUser;
 module.exports.logStatsForUser = logStatsForUser;
+module.exports.dailyStatsForAllUsers = dailyStatsForAllUsers;
 
 /* other links to try
 /  warsawoverviewpopulate

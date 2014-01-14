@@ -29,7 +29,7 @@ app.get('/public/*', function(req, res){
 app.post('/updateStats/:userName', function(req, res){
 	var userName = req.params.userName;
 	logStats.getSingleUser(userName, function(user){
-		logStats.logStatsForUser(user, function(){
+		logStats.logStatsForUser(user, 'stats', function(){
 			logStats.getStatsForUser(user, function(){
 				console.log(user);
 				res.send(user);
