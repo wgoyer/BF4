@@ -8,11 +8,25 @@ dbConnect = function(callback){
 	});
 };
 
-dailyStatsForAllUsers = function(){
+getTwitchData = function(user, callback){
+	twitchURI = 'http://api.justin.tv/api/stream/list.json?channel='+user.twitchID;
+	request(twitchURI, function(error,response,body){
+		var data = JSON.parse(body);
+		if(data.length !== 0){
+			user.twitchOnline=true;
+		} else {
+			user.twitchOnline=false;
+		}
+		if (callback) callback();
+	});
+};
+
+dailyStatsForAllUsers = function(collection, callback){
 	getAllUsers(function(userArray){
 		for(i=0;i<userArray.length;i++){
 			console.log('Collecting stats for '+userArray[i].name+'.');
-			logStatsForUser(userArray[i], 'daily');
+			logStatsForUser(userArray[i], collection);
+			if(i >= userArray.length -1) callback();
 		}
 	});
 };
@@ -102,6 +116,7 @@ module.exports.getAllUsers = getAllUsers;
 module.exports.getSingleUser = getSingleUser;
 module.exports.logStatsForUser = logStatsForUser;
 module.exports.dailyStatsForAllUsers = dailyStatsForAllUsers;
+module.exports.getTwitchData = getTwitchData;
 
 /* other links to try
 /  warsawoverviewpopulate
