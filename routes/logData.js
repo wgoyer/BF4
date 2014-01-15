@@ -18,6 +18,7 @@ getTwitchData = function(user, callback){
 			user.twitchOnline=false;
 		}
 		if (callback) callback();
+		console.log(user.twitchOnline);
 	});
 };
 

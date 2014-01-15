@@ -3,6 +3,7 @@ html
 		link(rel='stylesheet', href='public/stylesheets/mainStyle.css')
 		script(type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		script(type='text/javascript' src='public/js/updateStats.js')
+		script(type='text/javascript' src='public/js/flipCard.js')
 	body
 		- for (i=0;i<playerArray.length;i++) {
 			div(id=playerArray[i].name, class='player')
@@ -42,6 +43,7 @@ html
 								|#{playerArray[i].skill}
 							td
 								|#{playerArray[i].timePlayed}
+				- if(playerArray.twitchOnline === true){
 				.flash
 					object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=#{playerArray[i].twitchID}', bgcolor='#000000')
 						param(name='allowFullScreen', value='true')
@@ -51,4 +53,11 @@ html
 						param(name='flashvars', value='hostname=www.twitch.tv&channel=#{playerArray[i].twitchID}&auto_play=true&start_volume=25')
 				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
 					| Update Stats
+				- } else {
+				.extraStats
+				button.updateBtn(name='twitch' onClick='showTwitch("#{playerArray[i].name}")')
+					| Twitch
+				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
+					| Update Stats
+				- }
 		- }

@@ -19,7 +19,9 @@ function loadUserDataRecurse(users, count, callback){
 		callback();
 	} else {
 		statGrabber.getStatsForUser(users[count], function(){
-			return loadUserDataRecurse(users, count+1, callback);
+			statGrabber.getTwitchData(users[count], function(){
+				return loadUserDataRecurse(users, count+1, callback);
+			});
 		});
 	}
 }

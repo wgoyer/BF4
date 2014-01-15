@@ -4,7 +4,7 @@ button{
 .updateBtn{
 	height: 20px;
 	width: 80px;
-	margin-left: 10px;
+	margin-left: 15px;
 }
 .player {
 	width: 640px;
@@ -20,6 +20,16 @@ button{
 .flash {
 	margin: 10px;
 	margin-bottom: 5px;
+}
+.extraStats {
+	border-style: solid;
+	border-color: black;
+	border-width: 2px;
+	height: 350px;
+	width: 610px;
+	float: left;
+	margin-left: 15px;
+	margin-right: 10px;
 }
 
 .rank {
