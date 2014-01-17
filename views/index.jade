@@ -44,7 +44,7 @@ html
 							td
 								|#{playerArray[i].timePlayed}
 				- if(playerArray.twitchOnline === true){
-				.flash
+				.cardData
 					object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=#{playerArray[i].twitchID}', bgcolor='#000000')
 						param(name='allowFullScreen', value='true')
 						param(name='allowScriptAccess', value='always')
@@ -54,8 +54,8 @@ html
 				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
 					| Update Stats
 				- } else {
-				.extraStats
-				button.updateBtn(name='twitch' onClick='showTwitch("#{playerArray[i].name}")')
+				.cardData
+				button.updateBtn(name='twitch' onClick='showTwitch("#{playerArray[i].name}", "#{playerArray[i].twitchID}")')
 					| Twitch
 				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
 					| Update Stats

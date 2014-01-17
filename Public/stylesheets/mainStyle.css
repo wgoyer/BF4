@@ -4,7 +4,7 @@ button{
 .updateBtn{
 	height: 20px;
 	width: 80px;
-	margin-left: 15px;
+	margin-left: 10px;
 }
 .player {
 	width: 640px;
@@ -21,15 +21,17 @@ button{
 	margin: 10px;
 	margin-bottom: 5px;
 }
-.extraStats {
+.cardData {
 	border-style: solid;
 	border-color: black;
 	border-width: 2px;
-	height: 350px;
-	width: 610px;
+	height: 378px;
+	width: 620px;
 	float: left;
-	margin-left: 15px;
+	margin-left: 10px;
 	margin-right: 10px;
+	margin-bottom: 2px;
+	
 }
 
 .rank {
