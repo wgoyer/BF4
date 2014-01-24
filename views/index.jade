@@ -1,9 +1,13 @@
 html
 	head
 		link(rel='stylesheet', href='public/stylesheets/mainStyle.css')
+		script(src="Public/charts/amcharts/amcharts.js" type="text/javascript")
+		script(src="Public/charts/amcharts/serial.js" type="text/javascript")
 		script(type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
 		script(type='text/javascript' src='public/js/updateStats.js')
 		script(type='text/javascript' src='public/js/flipCard.js')
+		script(type='text/javascript' src='public/js/buildCharts.js')
+
 	body
 		- for (i=0;i<playerArray.length;i++) {
 			div(id=playerArray[i].name, class='player')
@@ -51,13 +55,18 @@ html
 						param(name='allowNetworking', value='all')
 						param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
 						param(name='flashvars', value='hostname=www.twitch.tv&channel=#{playerArray[i].twitchID}&auto_play=true&start_volume=25')
-				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
-					| Update Stats
+				.buttonDiv
+					button.updateBtn(class = 'btnToggle' name='stats' onClick='showStats("#{playerArray[i]}")')
+					button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
+						| Update Stats
 				- } else {
+				script
+					| createChart(#{playerArray[i]})
 				.cardData
-				button.updateBtn(name='twitch' onClick='showTwitch("#{playerArray[i].name}", "#{playerArray[i].twitchID}")')
-					| Twitch
-				button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
-					| Update Stats
+				.buttonDiv
+					button.updateBtn(class='btnToggle' name='twitch' onClick='showTwitch("#{playerArray[i]}")')
+						| Twitch
+					button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
+						| Update Stats
 				- }
 		- }

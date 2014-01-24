@@ -1,4 +1,5 @@
 var MongoClient = require('mongodb').MongoClient;
+var moment = require('moment');
 var request = require('request');
 
 dbConnect = function(callback){
@@ -18,7 +19,6 @@ getTwitchData = function(user, callback){
 			user.twitchOnline=false;
 		}
 		if (callback) callback();
-		console.log(user.twitchOnline);
 	});
 };
 
@@ -76,7 +76,6 @@ logStatsForUser = function(user, collection, callback){
 
 getStatsForUser = function(user, callback){
 	var query = {"userName" : user.name};
-	var projection = {"player":1, "stats" : 1};
 	var sorter = {"dateUpdated": -1};
 	dbConnect(function(db){
 		db.collection('stats').find(query).sort(sorter).limit(1).toArray(function(err, doc){
@@ -111,6 +110,33 @@ logSingleUser = function(singleUser, callback){
 	});
 };
 
+getDailyStats = function(user, callback){
+	var query = {"userName" : user.name};
+	var projection = {"dateUpdated": 1, "data.generalStats.score":1, "_id": 0};
+	var sorter = {"dateUpdated": -1};
+	var userDaily = [];
+	var tempObj = {};
+	var difference = 0;
+	dbConnect(function(db){
+		db.collection('daily').find(query, projection).sort(sorter).limit(6).toArray(function(err, doc){
+			for(i=doc.length-1;i>-1;i--){
+				if(i<doc.length-1){
+					difference = doc[i].data.generalStats.score - doc[i+1].data.generalStats.score;
+				}
+				tempObj = {
+					"date" : moment(doc[i].dateUpdated).format("MMM Do YY"),
+					"score" : Number(doc[i].data.generalStats.score),
+					"difference" : Number(difference)
+				};
+				userDaily.push(tempObj);
+			}
+			userDaily.shift(0);
+			user.dailyStats = userDaily;
+			callback();
+		});
+	});
+};
+
 module.exports.logSingleUser = logSingleUser;
 module.exports.getStatsForUser = getStatsForUser;
 module.exports.getAllUsers = getAllUsers;
@@ -118,6 +144,7 @@ module.exports.getSingleUser = getSingleUser;
 module.exports.logStatsForUser = logStatsForUser;
 module.exports.dailyStatsForAllUsers = dailyStatsForAllUsers;
 module.exports.getTwitchData = getTwitchData;
+module.exports.getDailyStats = getDailyStats;
 
 /* other links to try
 /  warsawoverviewpopulate

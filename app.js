@@ -20,12 +20,6 @@ app.get('/public/*', function(req, res){
   res.sendfile(__dirname + req.url);
 });
 
-// app.post('/updateStats', function(req, res){
-// 	logStats.logData(function(){
-// 		res.send('done');
-// 	});
-// });
-
 app.post('/updateStats/:userName', function(req, res){
 	var userName = req.params.userName;
 	logStats.getSingleUser(userName, function(user){

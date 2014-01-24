@@ -19,8 +19,11 @@ function loadUserDataRecurse(users, count, callback){
 		callback();
 	} else {
 		statGrabber.getStatsForUser(users[count], function(){
-			statGrabber.getTwitchData(users[count], function(){
-				return loadUserDataRecurse(users, count+1, callback);
+			statGrabber.getDailyStats(users[count], function(){
+				console.log(users[count]);
+				statGrabber.getTwitchData(users[count], function(){
+					return loadUserDataRecurse(users, count+1, callback);
+				});
 			});
 		});
 	}
