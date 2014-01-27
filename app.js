@@ -25,7 +25,7 @@ app.post('/updateStats/:userName', function(req, res){
 	logStats.getSingleUser(userName, function(user){
 		logStats.logStatsForUser(user, 'stats', function(){
 			logStats.getStatsForUser(user, function(){
-				console.log(user);
+				// console.log(user);
 				res.send(user);
 			});
 		});

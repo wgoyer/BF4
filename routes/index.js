@@ -20,7 +20,7 @@ function loadUserDataRecurse(users, count, callback){
 	} else {
 		statGrabber.getStatsForUser(users[count], function(){
 			statGrabber.getDailyStats(users[count], function(){
-				console.log(users[count]);
+				// console.log(users[count].dailyStats);
 				statGrabber.getTwitchData(users[count], function(){
 					return loadUserDataRecurse(users, count+1, callback);
 				});

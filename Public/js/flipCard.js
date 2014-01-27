@@ -15,7 +15,7 @@ var showStats = function(user){
 	var tName = user.twitchId;
 	var centerDiv = '#'+uName+' .cardData';
 	var buttonId = '#'+uName+' .btnToggle';
-	createChart(user);
+	createChart(user.dailyStats);
 	$(buttonId).html('Twitch');
 	$(buttonId).attr('onClick', 'showTwitch("'+uName+'","'+tName+'")');
 	$(buttonId).attr('name', 'twitch');
