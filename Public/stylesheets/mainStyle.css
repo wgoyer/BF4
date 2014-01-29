@@ -43,6 +43,7 @@ button{
 	font-size: 24pt;
 	color: white;
 	float: left;
+	overflow: hidden;
 }
 .playerRank{
 	width: 55px;

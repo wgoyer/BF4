@@ -58,7 +58,7 @@ html
 						param(name='movie', value='http://www.twitch.tv/widgets/live_embed_player.swf')
 						param(name='flashvars', value='hostname=www.twitch.tv&channel=#{playerArray[i].twitchID}&auto_play=true&start_volume=25')
 				.buttonDiv
-					button.updateBtn(class = 'btnToggle' name='stats' onClick='showStats("#{JSON.stringify(playerArray[i]")')
+					button.updateBtn(class = 'btnToggle' name='stats' onClick="showStats('#{JSON.stringify(playerArray[i])}')")
 					button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
 						| Update Stats
 				- } else {
@@ -67,7 +67,7 @@ html
 					createChart(chartData, '#{playerArray[i].name}_cardData');
 				.cardData(id='#{playerArray[i].name}_cardData')
 				.buttonDiv
-					button.updateBtn(class='btnToggle' name='twitch' onClick='showTwitch("#{JSON.stringify(playerArray[i]")')
+					button.updateBtn(class='btnToggle' name='twitch'  onClick="showTwitch('#{JSON.stringify(playerArray[i])}')")
 						| Twitch
 					button.updateBtn(name='update' onClick='updateStats("#{playerArray[i].name}")')
 						| Update Stats
