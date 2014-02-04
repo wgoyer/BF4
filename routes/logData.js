@@ -54,21 +54,41 @@ getSingleUser = function(userName, callback){
 	});
 };
 
+getWeaponStats = function(user, callback){
+	var weaponURI = "http://battlelog.battlefield.com/bf4/warsawWeaponsPopulateStats/"+user.ID+"/32";
+	request(weaponURI, function(error, response, body){
+		if(!error && response.statusCode === 200){
+			var weaponStats = JSON.parse(body);
+			user.weaponStats = weaponStats.data;
+		}
+		if (callback) callback();
+	});
+};
+
 logStatsForUser = function(user, collection, callback){
 	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
+	var weaponURI = "http://battlelog.battlefield.com/bf4/warsawWeaponsPopulateStats/"+user.ID+"/32";
 	dbConnect(function(db){
-		request(userURI, function(error, response, body){
+		request(userURI, function(error, response, basicStats){
 			if(!error && response.statusCode == 200){
-				var stats = JSON.parse(body);
+				var stats = JSON.parse(basicStats);
 				stats['dateUpdated'] = new Date();
 				stats['userName'] = user.name;
 				stats['twitchID'] = user.twitchID;
-				console.log(stats.dateUpdated);
-				db.collection(collection).insert(stats, function(err,data){
-					if(err) throw err;
-					db.close();
-					if (callback) callback();
+				//ToDo: Change this to the function call instead of embedded in this function.
+				request(weaponURI, function(error, response, weaponBody){
+					if(!error && response.statusCode === 200){
+						var weaponStats = JSON.parse(weaponBody);
+						stats['weaponStats'] = weaponStats.data;
+						console.log(stats.dateUpdated);
+						db.collection(collection).insert(stats, function(err,data){
+							if(err) throw err;
+							db.close();
+							if (callback) callback();
+						});
+					}
 				});
+				
 			}
 		});
 	});
@@ -145,6 +165,7 @@ module.exports.logStatsForUser = logStatsForUser;
 module.exports.dailyStatsForAllUsers = dailyStatsForAllUsers;
 module.exports.getTwitchData = getTwitchData;
 module.exports.getDailyStats = getDailyStats;
+module.exports.getWeaponStats = getWeaponStats;
 
 /* other links to try
 /  warsawoverviewpopulate
