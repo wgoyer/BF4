@@ -8,7 +8,6 @@ var updateStats = function(user){
 			$(userTable).html('<img height="55px", width="45px", src = "/public/images/gifs/loading.gif" />');
 		}
 	}).success(function(data){
-		console.log(data);
 		generateTable(data, function(newHtml){
 			$(userTable).html(newHtml);
 			$(userRank).html('<img class = "rank" src = "/public/images/'+data.rankImage+'"/>');

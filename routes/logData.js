@@ -66,31 +66,38 @@ getWeaponStats = function(user, callback){
 };
 
 logStatsForUser = function(user, collection, callback){
+	var returnValues = [];
+	var stats = {};
 	var userURI = "http://battlelog.battlefield.com/bf4/warsawdetailedstatspopulate/"+user.ID+"/32/";
+	var overviewURI = "http://battlelog.battlefield.com/bf4/warsawoverviewpopulate/"+user.ID+"/32/";
 	var weaponURI = "http://battlelog.battlefield.com/bf4/warsawWeaponsPopulateStats/"+user.ID+"/32";
-	dbConnect(function(db){
-		request(userURI, function(error, response, basicStats){
-			if(!error && response.statusCode == 200){
-				var stats = JSON.parse(basicStats);
-				stats['dateUpdated'] = new Date();
-				stats['userName'] = user.name;
-				stats['twitchID'] = user.twitchID;
-				//ToDo: Change this to the function call instead of embedded in this function.
-				request(weaponURI, function(error, response, weaponBody){
-					if(!error && response.statusCode === 200){
-						var weaponStats = JSON.parse(weaponBody);
-						stats['weaponStats'] = weaponStats.data;
-						console.log(stats.dateUpdated);
-						db.collection(collection).insert(stats, function(err,data){
-							if(err) throw err;
-							db.close();
-							if (callback) callback();
-						});
-					}
-				});
-				
-			}
-		});
+
+	request(userURI, function(error, response, basicStats){
+		if(!error && response.statusCode === 200){
+			var jsonBasicStats = JSON.parse(basicStats);
+			stats.dateUpdated = new Date();
+			stats.userName = user.name;
+			stats.twitchID = user.twitchID;
+			stats.data = jsonBasicStats.data;
+			returnValues.push(1);
+			checkValues(returnValues, stats, collection, callback);
+		}
+	});
+	request(weaponURI, function(error, response, weaponBody){
+		if(!error && response.statusCode === 200){
+			var weaponStats = JSON.parse(weaponBody);
+			stats.weaponStats = weaponStats.data;
+			returnValues.push(1);
+			checkValues(returnValues, stats, collection, callback);
+		}
+	});
+	request(overviewURI, function(error, response, overviewBody){
+		if(!error && response.statusCode === 200){
+			var overviewStats = JSON.parse(overviewBody);
+			stats.overviewStats = overviewStats;
+			returnValues.push(1);
+			checkValues(returnValues, stats, collection, callback);
+		}
 	});
 };
 
@@ -116,8 +123,11 @@ getStatsForUser = function(user, callback){
 			user.headShots = stats.headshots;
 			user.rankImage = "bf4\\ranks\\r"+stats.rank+".png";
 			user.twitchID = doc[0].twitchID;
-			db.close();
-			callback();
+			calcLvlProgress(stats.overviewStats, function(percentage){
+				user.lvlProgress = percentage;
+				db.close();
+				callback();
+			});
 		});
 	});
 };
@@ -157,6 +167,29 @@ getDailyStats = function(user, callback){
 	});
 };
 
+checkValues = function(returnValues, stats, collection, callback){
+	if (returnValues.length === 3){
+		dbConnect(function(db){
+			db.collection(collection).insert(stats, function(err, data){
+				if(err) throw err;
+				db.close();
+				if (callback) callback();
+			});
+		});
+	} else {
+		return;
+	}
+};
+
+calcLvlProgress = function(stats, callback){
+	var scoreNeeded = stats.rankScoreNeeded[data.rankScoreNeeded.length-1];
+	var currentScore = stats.overviewStats.score;
+	var pointsNeeded = scoreNeeded - currentScore;
+	var levelDifference = stats.rankScoreNeeded[stats.rankScoreNeeded.lenth-1] - stats.rankScoreNeeded[stats.rankScoreNeeded.length-2];
+	var percentage = pointsNeeded / levelDifference * 100;
+	callback(percentage);
+};
+
 module.exports.logSingleUser = logSingleUser;
 module.exports.getStatsForUser = getStatsForUser;
 module.exports.getAllUsers = getAllUsers;
@@ -166,6 +199,7 @@ module.exports.dailyStatsForAllUsers = dailyStatsForAllUsers;
 module.exports.getTwitchData = getTwitchData;
 module.exports.getDailyStats = getDailyStats;
 module.exports.getWeaponStats = getWeaponStats;
+// module.exports.logStatsForUserNew = logStatsForUserNew;
 
 /* other links to try
 /  warsawoverviewpopulate

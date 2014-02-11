@@ -1,0 +1,31 @@
+table(border=1)
+	tr
+		td
+			| Kills
+		td
+			| Deaths
+		td
+			| K/Dr
+		td
+			| H-Shots
+		td
+			| Score
+		td
+			| Skill
+		td
+			| Hrs Played
+	tr
+		td
+			|#{playerArray[i].kills}
+		td(style="color:red")
+			|#{playerArray[i].deaths}
+		td(style="color:green")
+			|#{playerArray[i].kdr}
+		td
+			|#{playerArray[i].headShots}
+		td
+			|#{playerArray[i].score}
+		td
+			|#{playerArray[i].skill}
+		td
+			|#{playerArray[i].timePlayed}

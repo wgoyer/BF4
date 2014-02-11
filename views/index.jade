@@ -1,13 +1,6 @@
 html
 	head
-		link(rel='stylesheet', href='public/stylesheets/mainStyle.css')
-		script(src="Public/charts/amcharts/amcharts.js" type="text/javascript")
-		script(src="Public/charts/amcharts/serial.js" type="text/javascript")
-		script(type='text/javascript' src='//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js')
-		script(type='text/javascript' src='public/js/updateStats.js')
-		script(type='text/javascript' src='public/js/flipCard.js')
-		script(type='text/javascript' src='public/js/buildCharts.js')
-
+		include partials/head
 	body
 		- for (i=0;i<playerArray.length;i++) {
 			- var playerObject = JSON.stringify(playerArray);
@@ -18,37 +11,7 @@ html
 				.playerName
 					| #{playerArray[i].name}
 				.playerDemo
-					table(border=1)
-						tr
-							td
-								| Kills
-							td
-								| Deaths
-							td
-								| K/Dr
-							td
-								| H-Shots
-							td
-								| Score
-							td
-								| Skill
-							td
-								| Hrs Played
-						tr
-							td
-								|#{playerArray[i].kills}
-							td(style="color:red")
-								|#{playerArray[i].deaths}
-							td(style="color:green")
-								|#{playerArray[i].kdr}
-							td
-								|#{playerArray[i].headShots}
-							td
-								|#{playerArray[i].score}
-							td
-								|#{playerArray[i].skill}
-							td
-								|#{playerArray[i].timePlayed}
+					include partials/playerDemoTable.jade
 				- if(playerArray[i].twitchOnline === true){
 				.cardData(id='#{playerArray[i].name}_cardData')
 					object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=#{playerArray[i].twitchID}', bgcolor='#000000')

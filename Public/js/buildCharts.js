@@ -1,5 +1,4 @@
 var createChart = function(chartData, divId){
-	console.log("Creating charts with: "+chartData+" and: "+divId);
 	AmCharts.ready(function () {
 		var graph = new AmCharts.AmGraph();
 		var chart = new AmCharts.AmSerialChart();
