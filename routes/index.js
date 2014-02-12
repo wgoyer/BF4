@@ -15,12 +15,11 @@ function createUsers(callback){
 }
 
 function loadUserDataRecurse(users, count, callback){
-	if(users.length === count){
+	if(count === users.length){
 		callback();
 	} else {
 		statGrabber.getStatsForUser(users[count], function(){
 			statGrabber.getDailyStats(users[count], function(){
-				// console.log(users[count].dailyStats);
 				statGrabber.getTwitchData(users[count], function(){
 					return loadUserDataRecurse(users, count+1, callback);
 				});

@@ -4,7 +4,6 @@ html
 	body
 		- for (i=0;i<playerArray.length;i++) {
 			- var playerObject = JSON.stringify(playerArray);
-			script.
 			div(id=playerArray[i].name, class='player')
 				.playerRank
 					img.rank(src='public/images/#{playerArray[i].rankImage}')
@@ -12,6 +11,13 @@ html
 					| #{playerArray[i].name}
 				.playerDemo
 					include partials/playerDemoTable.jade
+				.playerProgress
+					script.
+						$(function(){
+							$('##{playerArray[i].name} .playerProgress').progressbar({
+								value: #{playerArray[i].lvlProgress}	
+							}).height(10);
+						});
 				- if(playerArray[i].twitchOnline === true){
 				.cardData(id='#{playerArray[i].name}_cardData')
 					object#live_embed_player_flash(type='application/x-shockwave-flash', height='378', width='620', data='http://www.twitch.tv/widgets/live_embed_player.swf?channel=#{playerArray[i].twitchID}', bgcolor='#000000')

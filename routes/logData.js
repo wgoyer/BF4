@@ -107,13 +107,13 @@ getStatsForUser = function(user, callback){
 	dbConnect(function(db){
 		db.collection('stats').find(query).sort(sorter).limit(1).toArray(function(err, doc){
 			var stats = doc[0].data.generalStats;
+			var statsOverview = doc[0].overviewStats;
 			if (stats.timePlayed > 1){
 				timePlayed = (stats.timePlayed / 60 / 60).toFixed(2);
 			}
 			else {
 				timePlayed = "N/A";
 			}
-			if(err) throw err;
 			user.timePlayed = timePlayed;
 			user.score = stats.score;
 			user.skill = stats.skill;
@@ -123,9 +123,9 @@ getStatsForUser = function(user, callback){
 			user.headShots = stats.headshots;
 			user.rankImage = "bf4\\ranks\\r"+stats.rank+".png";
 			user.twitchID = doc[0].twitchID;
-			calcLvlProgress(stats.overviewStats, function(percentage){
+			calcLvlProgress(statsOverview.data, function(percentage){
 				user.lvlProgress = percentage;
-				db.close();
+				console.log(percentage);
 				callback();
 			});
 		});
@@ -182,12 +182,23 @@ checkValues = function(returnValues, stats, collection, callback){
 };
 
 calcLvlProgress = function(stats, callback){
-	var scoreNeeded = stats.rankScoreNeeded[data.rankScoreNeeded.length-1];
+	var scoreNeeded = stats.rankScoreNeeded[stats.rankScoreNeeded.length-1];
 	var currentScore = stats.overviewStats.score;
 	var pointsNeeded = scoreNeeded - currentScore;
-	var levelDifference = stats.rankScoreNeeded[stats.rankScoreNeeded.lenth-1] - stats.rankScoreNeeded[stats.rankScoreNeeded.length-2];
+	var levelDifference = stats.rankScoreNeeded[stats.rankScoreNeeded.length-1] - stats.rankScoreNeeded[stats.rankScoreNeeded.length-2];
 	var percentage = pointsNeeded / levelDifference * 100;
-	callback(percentage);
+	console.log("Score needed: "+scoreNeeded);
+	console.log("Current Score: "+currentScore);
+	console.log("Points Needed: "+pointsNeeded);
+	console.log("Level Difference: "+levelDifference);
+	console.log("Percentage: "+percentage.toFixed());
+	if(percentage < 0){
+		percentage = 100;
+		callback(percentage);
+	} else {
+		percentage = 100 - percentage.toFixed();
+		callback(percentage);
+	}
 };
 
 module.exports.logSingleUser = logSingleUser;
